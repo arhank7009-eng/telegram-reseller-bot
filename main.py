@@ -299,8 +299,8 @@ def callback(call):
     # ==================================
 
     bot.send_message(
-        call.message.chat.id,
-        f"""
+    call.message.chat.id,
+    f"""
 ✅ PAYMENT SUCCESSFUL
 
 📦 Product:
@@ -315,33 +315,7 @@ def callback(call):
 
 ⚠️ DO NOT SHARE YOUR KEY
 """
-    )
-
-    # ==================================
-    # ADMIN LOG
-    # ==================================
-
-    bot.send_message(
-        ADMIN_ID,
-        f"""
-🛒 NEW ORDER
-
-👤 USER:
-{call.from_user.id}
-
-📦 PRODUCT:
-{product_name}
-
-⏳ DURATION:
-{duration}
-
-🔑 KEY:
-{result}
-"""
-    )
-⚠️ DO NOT SHARE YOUR KEY
-"""
-        )
+)
 
         # ==================================
         # ADMIN LOG
