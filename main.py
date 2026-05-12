@@ -263,69 +263,7 @@ def callback(call):
     # SELECT PRODUCT
     # ======================================
 
-    elif data[0] == "product":
-
-        product_name = data[1]
-
-        markup = types.InlineKeyboardMarkup()
-
-        for duration, price in products[product_name]["durations"].items():
-
-            btn = types.InlineKeyboardButton(
-                f"{duration} - ₹{price}",
-                callback_data=f"buy|{product_name}|{duration}"
-            )
-
-            markup.add(btn)
-
-        bot.edit_message_text(
-            f"🛒 {product_name}\n\nSelect Duration",
-            call.message.chat.id,
-            call.message.message_id,
-            reply_markup=markup
-        )
-
-    # ======================================
-    # BUY OPTION
-    # ======================================
-
-    elif data[0] == "buy":
-
-        product_name = data[1]
-        duration = data[2]
-
-        price = products[product_name]["durations"][duration]
-
-        markup = types.InlineKeyboardMarkup()
-
-        paid_btn = types.InlineKeyboardButton(
-            "✅ I PAID",
-            callback_data=f"paid|{product_name}|{duration}"
-        )
-
-        markup.add(paid_btn)
-
-        caption = f"""
-💸 PAYMENT DETAILS
-
-🏦 UPI ID:
-{UPI_ID}
-
-⚠️ Pay And Click I PAID
-"""
-
-bot.send_photo(
-    call.message.chat.id,
-    QR_IMAGE,
-    caption=caption,
-    reply_markup=markup
-)
-
-# ==================================
-# PAYMENT SUCCESS
-# ==================================
-
-elif data[0] == "paid":
+    elif data[0] == "paid":
 
     product_name = data[1]
     duration = data[2]
@@ -340,29 +278,29 @@ elif data[0] == "paid":
     }
 
     try:
-    response = requests.post(
-        API_URL,
-        data=payload
-    )
+        response = requests.post(
+            API_URL,
+            data=payload
+        )
 
-    result = response.text
+        result = response.text
 
-except Exception as e:
-
-    bot.send_message(
-        call.message.chat.id,
-        f"❌ API ERROR\n\n{e}"
-    )
-
-    return
-
-        # ==================================
-        # SEND KEY TO USER
-        # ==================================
+    except Exception as e:
 
         bot.send_message(
             call.message.chat.id,
-            f"""
+            f"❌ API ERROR\n\n{e}"
+        )
+
+        return
+
+    # ==================================
+    # SEND KEY TO USER
+    # ==================================
+
+    bot.send_message(
+        call.message.chat.id,
+        f"""
 ✅ PAYMENT SUCCESSFUL
 
 📦 Product:
@@ -375,6 +313,32 @@ except Exception as e:
 
 {result}
 
+⚠️ DO NOT SHARE YOUR KEY
+"""
+    )
+
+    # ==================================
+    # ADMIN LOG
+    # ==================================
+
+    bot.send_message(
+        ADMIN_ID,
+        f"""
+🛒 NEW ORDER
+
+👤 USER:
+{call.from_user.id}
+
+📦 PRODUCT:
+{product_name}
+
+⏳ DURATION:
+{duration}
+
+🔑 KEY:
+{result}
+"""
+    )
 ⚠️ DO NOT SHARE YOUR KEY
 """
         )
