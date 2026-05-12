@@ -10,11 +10,11 @@ import requests
 # CONFIG
 # ==========================================
 
-BOT_TOKEN = "YOUR_BOT_TOKEN"
+BOT_TOKEN = "8697358234:AAHx5aHgNn4u62Ukhupo_GbdctqWvBCDhQo"
 
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-API_KEY = "YOUR_API_KEY"
+API_KEY = "7386f5665fea7a84983801e63db5ec7b"
 
 UPI_ID = "8795734376@ybl"
 
