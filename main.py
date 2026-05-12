@@ -321,41 +321,40 @@ bot.send_photo(
     reply_markup=markup
 )
 
-    # ======================================
-    # PAYMENT SUCCESS
-    # ======================================
+# ==================================
+# PAYMENT SUCCESS
+# ==================================
 
-    elif data[0] == "paid":
+elif data[0] == "paid":
 
-        product_name = data[1]
-        duration = data[2]
+    product_name = data[1]
+    duration = data[2]
 
-        pid = products[product_name]["pid"]
+    pid = products[product_name]["pid"]
 
-        payload = {
-            "api_key": API_KEY,
-            "action": "buy",
-            "product_id": pid,
-            "duration": duration
-        }
+    payload = {
+        "api_key": API_KEY,
+        "action": "buy",
+        "product_id": pid,
+        "duration": duration
+    }
 
-        try:
+    try:
+    response = requests.post(
+        API_URL,
+        data=payload
+    )
 
-            response = requests.post(
-                API_URL,
-                data=payload
-            )
+    result = response.text
 
-            result = response.text
+except Exception as e:
 
-        except Exception as e:
+    bot.send_message(
+        call.message.chat.id,
+        f"❌ API ERROR\n\n{e}"
+    )
 
-            bot.send_message(
-                call.message.chat.id,
-                f"❌ API ERROR\n\n{e}"
-            )
-
-            return
+    return
 
         # ==================================
         # SEND KEY TO USER
