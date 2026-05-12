@@ -14,7 +14,7 @@ import os
 # CONFIG
 # ==========================================
 
-BOT_TOKEN = "8408256623:AAFlV5mQKinX-rc75Hs6JjhKhCnZNt87fvA"
+BOT_TOKEN = "8408256623:AAHRV5RcyJfAPjNQgMDco7lw_qeJkDJ_gQY"
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
 API_KEY = "1c456265bf21eee11448ce37dcd469a3"
