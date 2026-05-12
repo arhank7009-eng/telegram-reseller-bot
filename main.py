@@ -388,7 +388,7 @@ def auto_reply(message):
 🔥 WELCOME TO AUTO RESELLER BOT
 
 📌 TYPE /start
-            """
+"""
         )
 
     elif "buy" in text:
@@ -407,7 +407,7 @@ def auto_reply(message):
 
 UPI:
 {UPI_ID}
-            """
+"""
         )
 
     elif "price" in text:
@@ -425,9 +425,8 @@ UPI:
 🤖 AUTO REPLY BOT
 
 📌 TYPE /start
-            """
+"""
         )
-
 # ==========================================
 # RUN BOT
 # ==========================================
