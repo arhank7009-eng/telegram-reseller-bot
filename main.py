@@ -333,21 +333,23 @@ def callback(call):
     "duration": duration
 }
 
-response = requests.post(
-    API_URL,
-    data=payload
-)
+try:
 
-result = response.text
+    response = requests.post(
+        API_URL,
+        data=payload
+    )
 
-        except Exception as e:
+    result = response.text
 
-            bot.send_message(
-                call.message.chat.id,
-                f"❌ API ERROR\n\n{e}"
-            )
+except Exception as e:
 
-            return
+    bot.send_message(
+        call.message.chat.id,
+        f"❌ API ERROR\n\n{e}"
+    )
+
+    return
 
         bot.send_message(
             call.message.chat.id,
