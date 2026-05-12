@@ -1,24 +1,46 @@
 # ==========================================
 # TELEGRAM AUTO RESELLER BOT
 # FULL AUTO API + ALL PRODUCTS VERSION
+# RENDER + GITHUB READY
 # ==========================================
 
 from telebot import TeleBot, types
+from flask import Flask
+from threading import Thread
 import requests
+import os
 
 # ==========================================
 # CONFIG
 # ==========================================
 
-BOT_TOKEN = "8697358234:AAHx5aHgNn4u62Ukhupo_GbdctqWvBCDhQo"
+BOT_TOKEN = "YOUR_BOT_TOKEN"
 
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-API_KEY = "7386f5665fea7a84983801e63db5ec7b"
+API_KEY = "YOUR_API_KEY"
 
 UPI_ID = "8795734376@ybl"
 
 bot = TeleBot(BOT_TOKEN)
+
+# ==========================================
+# KEEP ALIVE FOR RENDER
+# ==========================================
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot Running Successfully"
+
+def run():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 # ==========================================
 # PRODUCTS
@@ -214,10 +236,6 @@ def callback(call):
 
     data = call.data.split("|")
 
-    # ==========================================
-    # SHOW PRODUCTS
-    # ==========================================
-
     if call.data == "products":
 
         markup = types.InlineKeyboardMarkup()
@@ -237,10 +255,6 @@ def callback(call):
             call.message.message_id,
             reply_markup=markup
         )
-
-    # ==========================================
-    # SELECT PRODUCT
-    # ==========================================
 
     elif data[0] == "product":
 
@@ -270,10 +284,6 @@ def callback(call):
             reply_markup=markup
         )
 
-    # ==========================================
-    # PAYMENT PAGE
-    # ==========================================
-
     elif data[0] == "buy":
 
         product_name = data[1]
@@ -300,7 +310,7 @@ def callback(call):
 
 💰 PAY ON THIS UPI:
 
-`8795734376@ybl`
+`{UPI_ID}`
 
 ✅ AFTER PAYMENT CLICK PAID BUTTON
             """,
@@ -309,10 +319,6 @@ def callback(call):
             parse_mode="Markdown",
             reply_markup=markup
         )
-
-    # ==========================================
-    # API BUY PRODUCT
-    # ==========================================
 
     elif data[0] == "paid":
 
@@ -398,11 +404,11 @@ def auto_reply(message):
 
         bot.reply_to(
             message,
-            """
+            f"""
 💳 PAYMENT AVAILABLE
 
 UPI:
-8795734376@ybl
+{UPI_ID}
             """
         )
 
@@ -429,5 +435,7 @@ UPI:
 # ==========================================
 
 print("BOT RUNNING...")
+
+keep_alive()
 
 bot.infinity_polling()
