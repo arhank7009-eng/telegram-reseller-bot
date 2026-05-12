@@ -18,7 +18,7 @@ BOT_TOKEN = "8697358234:AAEciVbGOmJgdQqGJyDl8alMO6mCASpRbKA"
 
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-API_KEY = "YOUR_API_KEY"
+API_KEY = "1c456265bf21eee11448ce37dcd469a3"
 
 UPI_ID = "8795734376@ybl"
 
