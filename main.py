@@ -263,7 +263,7 @@ def callback(call):
     # SELECT PRODUCT
     # ======================================
 
-    elif data[0] == "paid":
+elif data[0] == "paid":
 
     product_name = data[1]
     duration = data[2]
