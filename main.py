@@ -328,20 +328,18 @@ def callback(call):
         pid = products[product_name]["pid"]
 
         payload = {
-            "api_key": API_KEY,
-            "action": "buy",
-            "product_id": pid,
-            "duration": duration
-        }
+    "api_key": "7386f5665fea7a84983801e63db5ec7b",
+    "action": "buy",
+    "product_id": pid,
+    "duration": duration
+}
 
-        try:
+response = requests.post(
+    API_URL,
+    data=payload
+)
 
-            response = requests.post(
-                API_URL,
-                data=payload
-            )
-
-            result = response.text
+result = response.text
 
         except Exception as e:
 
