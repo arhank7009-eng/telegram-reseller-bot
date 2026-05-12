@@ -33,8 +33,11 @@ ADMIN_ID = 7762997996
 API_KEY = "7386f5665fea7a84983801e63db5ec7b"
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-# QR IMAGE
+# QR IMAGE URL
 QR_IMAGE = "https://i.ibb.co/6bQxY5D/sample-qr.png"
+
+# UPI ID
+UPI_ID = "8795734376@ybl"
 
 # ==========================================
 # BOT START
@@ -305,27 +308,18 @@ def callback(call):
         caption = f"""
 💸 PAYMENT DETAILS
 
-📦 Product:
-{product_name}
-
-⏳ Duration:
-{duration}
-
-💰 Price:
-₹{price}
-
-🪙 UPI ID:
-"8795734376@ybl"
+🏦 UPI ID:
+{UPI_ID}
 
 ⚠️ Pay And Click I PAID
 """
 
-        bot.send_photo(
-            call.message.chat.id,
-            QR_IMAGE,
-            caption=caption,
-            reply_markup=markup
-        )
+bot.send_photo(
+    call.message.chat.id,
+    QR_IMAGE,
+    caption=caption,
+    reply_markup=markup
+)
 
     # ======================================
     # PAYMENT SUCCESS
