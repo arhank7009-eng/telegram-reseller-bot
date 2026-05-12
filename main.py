@@ -351,9 +351,9 @@ except Exception as e:
 
     return
 
-        bot.send_message(
-            call.message.chat.id,
-            f"""
+  bot.send_message(
+    call.message.chat.id,
+    f"""
 ✅ PAYMENT SUCCESSFUL
 
 📦 PRODUCT:
@@ -367,8 +367,8 @@ except Exception as e:
 {result}
 
 🔥 THANKS FOR BUYING
-            """
-        )
+"""
+)
 
 # ==========================================
 # AUTO REPLY SYSTEM
@@ -428,6 +428,7 @@ UPI:
 📌 TYPE /start
 """
         )
+
 # ==========================================
 # RUN BOT
 # ==========================================
