@@ -1,49 +1,24 @@
 # ==========================================
 # TELEGRAM AUTO RESELLER BOT
-# QR PAYMENT + AUTO KEY DELIVERY
+# FULL AUTO API + ALL PRODUCTS VERSION
 # ==========================================
 
-import telebot
-from telebot import types
+from telebot import TeleBot, types
 import requests
-
-from flask import Flask
-from threading import Thread
-
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "Bot is running"
-
-def run():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
 
 # ==========================================
 # CONFIG
 # ==========================================
 
-BOT_TOKEN = "8697358234:AAHx5aHgNn4u62Ukhupo_GbdctqWvBCDhQo"
-ADMIN_ID = 7762997996
+BOT_TOKEN = "YOUR_BOT_TOKEN"
 
-API_KEY = "7386f5665fea7a84983801e63db5ec7b"
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-# QR IMAGE URL
-QR_IMAGE = "https://i.ibb.co/6bQxY5D/sample-qr.png"
+API_KEY = "YOUR_API_KEY"
 
-# UPI ID
 UPI_ID = "8795734376@ybl"
 
-# ==========================================
-# BOT START
-# ==========================================
-
-bot = telebot.TeleBot(BOT_TOKEN)
+bot = TeleBot(BOT_TOKEN)
 
 # ==========================================
 # PRODUCTS
@@ -53,159 +28,157 @@ products = {
 
     "BR MOD FF PC VERSION": {
         "pid": "49",
-        "durations": {
-            "1 Day Pc Aim Silent": 100,
-            "1 Day Pc Bypass + Silent": 120,
-            "10 Days Pc Aim Silent": 450,
-            "10 Days Pc Bypass + Silent": 500,
-            "30 Days Pc Aim Silent": 1000,
-            "30 Days Pc Bypass + Silent": 1200
-        }
+        "durations": [
+            "1 Day Pc Aim Silent",
+            "1 Day Pc Bypass + Silent",
+            "10 Days Pc Aim Silent",
+            "10 Days Pc Bypass + Silent",
+            "30 Days Pc Aim Silent",
+            "30 Days Pc Bypass + Silent"
+        ]
     },
 
     "BR MOD FF ROOT + VPHONE": {
         "pid": "67",
-        "durations": {
-            "1 DaYs": 80,
-            "7 DaYs": 350,
-            "15 DaYs": 600,
-            "30 DaYs": 1000
-        }
+        "durations": [
+            "1 DaYs",
+            "7 DaYs",
+            "15 DaYs",
+            "30 DaYs"
+        ]
     },
 
     "DRIPCLIENT 8BP NONROOT": {
         "pid": "59",
-        "durations": {
-            "1 DaYs": 100,
-            "7 DaYs": 400,
-            "30 DaYs": 1200
-        }
+        "durations": [
+            "1 DaYs",
+            "7 DaYs",
+            "30 DaYs"
+        ]
     },
 
     "DRIPCLIENT FF PC AIMKILL": {
         "pid": "44",
-        "durations": {
-            "1 DaYS PC AIMKILL": 120,
-            "7 DaYS PC AIMKILL": 500,
-            "15 DaYS PC AIMKILL": 800,
-            "30 DaYS PC AIMKILL": 1500
-        }
+        "durations": [
+            "1 DaYS PC AIMKILL",
+            "7 DaYS PC AIMKILL",
+            "15 DaYS PC AIMKILL",
+            "30 DaYS PC AIMKILL"
+        ]
     },
 
     "DRIPCLIENT NONROOT FF": {
         "pid": "62",
-        "durations": {
-            "1 DaYS NONROOT": 80,
-            "3 DaYS NONROOT": 150,
-            "7 DaYS NONROOT": 300,
-            "15 DaYS NONROOT": 500,
-            "30 DaYS NONROOT": 900
-        }
+        "durations": [
+            "1 DaYS NONROOT",
+            "3 DaYS NONROOT",
+            "7 DaYS NONROOT",
+            "15 DaYS NONROOT",
+            "30 DaYS NONROOT"
+        ]
     },
 
     "DRIPCLIENT ROOT FF": {
         "pid": "63",
-        "durations": {
-            "1 DaYS ROOT": 100,
-            "7 DaYS ROOT": 350,
-            "30 DaYS ROOT": 1000
-        }
+        "durations": [
+            "1 DaYS ROOT",
+            "7 DaYS ROOT",
+            "30 DaYS ROOT"
+        ]
     },
 
     "FLUORITE IOS FF PANEL": {
         "pid": "58",
-        "durations": {
-            "1 DAYs FluoRite FF": 200,
-            "7 DAYs FluoRite FF": 700,
-            "30 DAYs FluoRite FF": 2000,
-            "Esgin Gbox Certificate For iOs": 1500
-        }
+        "durations": [
+            "1 DAYs FluoRite FF",
+            "7 DAYs FluoRite FF",
+            "30 DAYs FluoRite FF"
+        ]
     },
 
     "HAXX-CKER PRO FF ROOT + VPHONE": {
         "pid": "64",
-        "durations": {
-            "10 DaYs": 600
-        }
+        "durations": [
+            "10 DaYs"
+        ]
     },
 
     "HEX BLADE FF ROOT+VPHONE": {
         "pid": "71",
-        "durations": {
-            "1 DaYs": 100,
-            "7 DaYs": 400,
-            "14 DaYs": 700,
-            "30 DaYs": 1300
-        }
+        "durations": [
+            "1 DaYs",
+            "7 DaYs",
+            "14 DaYs",
+            "30 DaYs"
+        ]
     },
 
     "HG CHEATS FF NONROOT+ROOT": {
         "pid": "65",
-        "durations": {
-            "1 DaYs Root + Nonroot": 80,
-            "7 DaYs Root+Nonroot": 300,
-            "10 DaYs Root+Nonroot": 500,
-            "30 DaYs Root+Nonroot": 1200
-        }
+        "durations": [
+            "1 DaYs Root + Nonroot",
+            "7 DaYs Root+Nonroot",
+            "10 DaYs Root+Nonroot",
+            "30 DaYs Root+Nonroot"
+        ]
     },
 
     "MIGUL IPHONE IOS PANEL": {
         "pid": "69",
-        "durations": {
-            "1 DaYs Basic": 200,
-            "1 DaYs PRO": 300,
-            "7 DaYs Basic": 700,
-            "7 DaYs PRO": 1000,
-            "30 DaYs Basic": 2000,
-            "30 DaYs PRO": 3000,
-            "Esgin Gbox CERTIFICATE": 1500
-        }
+        "durations": [
+            "1 DaYs Basic",
+            "1 DaYs PRO",
+            "7 DaYs Basic",
+            "7 DaYs PRO",
+            "30 DaYs Basic",
+            "30 DaYs PRO"
+        ]
     },
 
     "NEO STRIKE FF ROOT + VPHONE": {
         "pid": "70",
-        "durations": {
-            "1 DaYs": 80,
-            "3 DaYs": 150,
-            "7 DaYs": 300,
-            "14 DaYs": 600
-        }
+        "durations": [
+            "1 DaYs",
+            "3 DaYs",
+            "7 DaYs",
+            "14 DaYs"
+        ]
     },
 
     "PATO TEAM FF NONROOT + ROOT": {
         "pid": "54",
-        "durations": {
-            "3 DaYs SaFe + Brutal": 150,
-            "7 DaYs": 300,
-            "7 DaYs BruTal": 350,
-            "15 DaYs": 700,
-            "30 DaYs": 1400
-        }
+        "durations": [
+            "3 DaYs SaFe + Brutal",
+            "7 DaYs",
+            "7 DaYs BruTal",
+            "15 DaYs",
+            "30 DaYs"
+        ]
     },
 
     "PRIME HOOK FF NONROOT": {
         "pid": "48",
-        "durations": {
-            "1 Days Nonroot": 70,
-            "3 Days Nonroot": 130,
-            "7 Days NonRoot": 250,
-            "10 Days Nonroot": 400
-        }
+        "durations": [
+            "1 Days Nonroot",
+            "3 Days Nonroot",
+            "7 Days NonRoot",
+            "10 Days Nonroot"
+        ]
     },
 
     "XYZ CHEATS FF ROOT+VPHONE": {
         "pid": "66",
-        "durations": {
-            "3 Days": 150,
-            "7 Days": 300,
-            "15 Days": 700,
-            "30 Days": 1400
-        }
+        "durations": [
+            "3 Days",
+            "7 Days",
+            "15 Days",
+            "30 Days"
+        ]
     }
 }
 
 # ==========================================
-# START
+# START COMMAND
 # ==========================================
 
 @bot.message_handler(commands=['start'])
@@ -222,7 +195,13 @@ def start(message):
 
     bot.send_message(
         message.chat.id,
-        "🔥 WELCOME TO AUTO RESELLER BOT 🔥",
+        """
+🔥 WELCOME TO AUTO RESELLER BOT 🔥
+
+✅ Instant Key Delivery
+💳 UPI Payment Available
+🛒 Premium Products Available
+        """,
         reply_markup=markup
     )
 
@@ -235,9 +214,9 @@ def callback(call):
 
     data = call.data.split("|")
 
-    # ======================================
+    # ==========================================
     # SHOW PRODUCTS
-    # ======================================
+    # ==========================================
 
     if call.data == "products":
 
@@ -259,49 +238,59 @@ def callback(call):
             reply_markup=markup
         )
 
-    # ======================================
+    # ==========================================
     # SELECT PRODUCT
-    # ======================================
+    # ==========================================
 
-elif data[0] == "paid":
+    elif data[0] == "product":
 
-    product_name = data[1]
-    duration = data[2]
+        product_name = data[1]
 
-    pid = products[product_name]["pid"]
+        markup = types.InlineKeyboardMarkup()
 
-    payload = {
-        "api_key": API_KEY,
-        "action": "buy",
-        "product_id": pid,
-        "duration": duration
-    }
+        for duration in products[product_name]["durations"]:
 
-    try:
-        response = requests.post(
-            API_URL,
-            data=payload
-        )
+            btn = types.InlineKeyboardButton(
+                duration,
+                callback_data=f"buy|{product_name}|{duration}"
+            )
 
-        result = response.text
+            markup.add(btn)
 
-    except Exception as e:
+        bot.edit_message_text(
+            f"""
+🛒 PRODUCT SELECTED
 
-        bot.send_message(
+📦 {product_name}
+
+⏳ SELECT DURATION
+            """,
             call.message.chat.id,
-            f"❌ API ERROR\n\n{e}"
+            call.message.message_id,
+            reply_markup=markup
         )
 
-        return
+    # ==========================================
+    # PAYMENT PAGE
+    # ==========================================
 
-    # ==================================
-    # SEND KEY TO USER
-    # ==================================
+    elif data[0] == "buy":
 
-    bot.send_message(
-    call.message.chat.id,
-    f"""
-✅ PAYMENT SUCCESSFUL
+        product_name = data[1]
+        duration = data[2]
+
+        markup = types.InlineKeyboardMarkup()
+
+        paid_btn = types.InlineKeyboardButton(
+            "✅ PAID",
+            callback_data=f"paid|{product_name}|{duration}"
+        )
+
+        markup.add(paid_btn)
+
+        bot.edit_message_text(
+            f"""
+💳 PAYMENT REQUIRED
 
 📦 Product:
 {product_name}
@@ -309,25 +298,58 @@ elif data[0] == "paid":
 ⏳ Duration:
 {duration}
 
-🔑 YOUR KEY:
+💰 PAY ON THIS UPI:
 
-{result}
+`8795734376@ybl`
 
-⚠️ DO NOT SHARE YOUR KEY
-"""
-)
+✅ AFTER PAYMENT CLICK PAID BUTTON
+            """,
+            call.message.chat.id,
+            call.message.message_id,
+            parse_mode="Markdown",
+            reply_markup=markup
+        )
 
-        # ==================================
-        # ADMIN LOG
-        # ==================================
+    # ==========================================
+    # API BUY PRODUCT
+    # ==========================================
+
+    elif data[0] == "paid":
+
+        product_name = data[1]
+        duration = data[2]
+
+        pid = products[product_name]["pid"]
+
+        payload = {
+            "api_key": API_KEY,
+            "action": "buy",
+            "product_id": pid,
+            "duration": duration
+        }
+
+        try:
+
+            response = requests.post(
+                API_URL,
+                data=payload
+            )
+
+            result = response.text
+
+        except Exception as e:
+
+            bot.send_message(
+                call.message.chat.id,
+                f"❌ API ERROR\n\n{e}"
+            )
+
+            return
 
         bot.send_message(
-            ADMIN_ID,
+            call.message.chat.id,
             f"""
-🛒 NEW ORDER
-
-👤 USER:
-{call.from_user.id}
+✅ PAYMENT SUCCESSFUL
 
 📦 PRODUCT:
 {product_name}
@@ -335,16 +357,77 @@ elif data[0] == "paid":
 ⏳ DURATION:
 {duration}
 
-🔑 KEY:
-{result}
-"""
+🔑 YOUR KEY:
 
+{result}
+
+🔥 THANKS FOR BUYING
+            """
+        )
+
+# ==========================================
+# AUTO REPLY SYSTEM
+# ==========================================
+
+@bot.message_handler(func=lambda message: True)
+def auto_reply(message):
+
+    text = message.text.lower()
+
+    if text in ["hi", "hello", "hey", "hlo"]:
+
+        bot.reply_to(
+            message,
+            """
+👋 HELLO BRO
+
+🔥 WELCOME TO AUTO RESELLER BOT
+
+📌 TYPE /start
+            """
+        )
+
+    elif "buy" in text:
+
+        bot.reply_to(
+            message,
+            "🛒 TO BUY PRODUCTS TYPE /start"
+        )
+
+    elif "payment" in text:
+
+        bot.reply_to(
+            message,
+            """
+💳 PAYMENT AVAILABLE
+
+UPI:
+8795734376@ybl
+            """
+        )
+
+    elif "price" in text:
+
+        bot.reply_to(
+            message,
+            "💰 ALL PRICES AVAILABLE INSIDE BOT\n\nTYPE /start"
+        )
+
+    else:
+
+        bot.reply_to(
+            message,
+            """
+🤖 AUTO REPLY BOT
+
+📌 TYPE /start
+            """
+        )
 
 # ==========================================
 # RUN BOT
 # ==========================================
 
-print("Bot Started Successfully")
+print("BOT RUNNING...")
 
-keep_alive()
 bot.infinity_polling()
