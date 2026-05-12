@@ -328,7 +328,7 @@ def callback(call):
         pid = products[product_name]["pid"]
 
         payload = {
-    "api_key": "7386f5665fea7a84983801e63db5ec7b",
+    "api_key": "1c456265bf21eee11448ce37dcd469a3",
     "action": "buy",
     "product_id": pid,
     "duration": duration
