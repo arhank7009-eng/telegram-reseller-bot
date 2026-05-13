@@ -48,161 +48,161 @@ def keep_alive():
     t.start()
 
 # ==========================================
-# PRODUCTS
+# PRODUCTS WITH PRICE
 # ==========================================
 
 products = {
+
     "BR MOD FF PC VERSION": {
         "pid": "49",
-        "durations": [
-            "1 Day Pc Aim Silent",
-            "1 Day Pc Bypass + Silent",
-            "10 Days Pc Aim Silent",
-            "10 Days Pc Bypass + Silent",
-            "30 Days Pc Aim Silent",
-            "30 Days Pc Bypass + Silent"
-        ]
+        "durations": {
+            "1 Day Pc Aim Silent": 99,
+            "1 Day Pc Bypass + Silent": 149,
+            "10 Days Pc Aim Silent": 399,
+            "10 Days Pc Bypass + Silent": 499,
+            "30 Days Pc Aim Silent": 799,
+            "30 Days Pc Bypass + Silent": 999
+        }
     },
 
     "BR MOD FF ROOT + VPHONE": {
         "pid": "67",
-        "durations": [
-            "1 DaYs",
-            "7 DaYs",
-            "15 DaYs",
-            "30 DaYs"
-        ]
+        "durations": {
+            "1 DaYs": 99,
+            "7 DaYs": 299,
+            "15 DaYs": 499,
+            "30 DaYs": 899
+        }
     },
 
     "DRIPCLIENT 8BP NONROOT": {
         "pid": "59",
-        "durations": [
-            "1 DaYs",
-            "7 DaYs",
-            "30 DaYs"
-        ]
+        "durations": {
+            "1 DaYs": 99,
+            "7 DaYs": 299,
+            "30 DaYs": 799
+        }
     },
 
     "DRIPCLIENT FF PC AIMKILL": {
         "pid": "44",
-        "durations": [
-            "1 DaYS PC AIMKILL",
-            "7 DaYS PC AIMKILL",
-            "15 DaYS PC AIMKILL",
-            "30 DaYS PC AIMKILL"
-        ]
+        "durations": {
+            "1 DaYS PC AIMKILL": 149,
+            "7 DaYS PC AIMKILL": 399,
+            "15 DaYS PC AIMKILL": 699,
+            "30 DaYS PC AIMKILL": 999
+        }
     },
 
     "DRIPCLIENT NONROOT FF": {
         "pid": "62",
-        "durations": [
-            "1 DaYS NONROOT",
-            "3 DaYS NONROOT",
-            "7 DaYS NONROOT",
-            "15 DaYS NONROOT",
-            "30 DaYS NONROOT"
-        ]
+        "durations": {
+            "1 DaYS NONROOT": 99,
+            "3 DaYS NONROOT": 199,
+            "7 DaYS NONROOT": 299,
+            "15 DaYS NONROOT": 499,
+            "30 DaYS NONROOT": 899
+        }
     },
 
     "DRIPCLIENT ROOT FF": {
         "pid": "63",
-        "durations": [
-            "1 DaYS ROOT",
-            "7 DaYS ROOT",
-            "30 DaYS ROOT"
-        ]
+        "durations": {
+            "1 DaYS ROOT": 99,
+            "7 DaYS ROOT": 299,
+            "30 DaYS ROOT": 799
+        }
     },
 
     "FLUORITE IOS FF PANEL": {
         "pid": "58",
-        "durations": [
-            "1 DAYs FluoRite FF",
-            "7 DAYs FluoRite FF",
-            "30 DAYs FluoRite FF"
-        ]
+        "durations": {
+            "1 DAYs FluoRite FF": 149,
+            "7 DAYs FluoRite FF": 399,
+            "30 DAYs FluoRite FF": 999
+        }
     },
 
     "HAXX-CKER PRO FF ROOT + VPHONE": {
         "pid": "64",
-        "durations": [
-            "10 DaYs"
-        ]
+        "durations": {
+            "10 DaYs": 499
+        }
     },
 
     "HEX BLADE FF ROOT+VPHONE": {
         "pid": "71",
-        "durations": [
-            "1 DaYs",
-            "7 DaYs",
-            "14 DaYs",
-            "30 DaYs"
-        ]
+        "durations": {
+            "1 DaYs": 99,
+            "7 DaYs": 299,
+            "14 DaYs": 499,
+            "30 DaYs": 899
+        }
     },
 
     "HG CHEATS FF NONROOT+ROOT": {
         "pid": "65",
-        "durations": [
-            "1 DaYs Root + Nonroot",
-            "7 DaYs Root+Nonroot",
-            "10 DaYs Root+Nonroot",
-            "30 DaYs Root+Nonroot"
-        ]
+        "durations": {
+            "1 DaYs Root + Nonroot": 99,
+            "7 DaYs Root+Nonroot": 299,
+            "10 DaYs Root+Nonroot": 499,
+            "30 DaYs Root+Nonroot": 899
+        }
     },
 
     "MIGUL IPHONE IOS PANEL": {
         "pid": "69",
-        "durations": [
-            "1 DaYs Basic",
-            "1 DaYs PRO",
-            "7 DaYs Basic",
-            "7 DaYs PRO",
-            "30 DaYs Basic",
-            "30 DaYs PRO"
-        ]
+        "durations": {
+            "1 DaYs Basic": 149,
+            "1 DaYs PRO": 249,
+            "7 DaYs Basic": 499,
+            "7 DaYs PRO": 699,
+            "30 DaYs Basic": 999,
+            "30 DaYs PRO": 1499
+        }
     },
 
     "NEO STRIKE FF ROOT + VPHONE": {
         "pid": "70",
-        "durations": [
-            "1 DaYs",
-            "3 DaYs",
-            "7 DaYs",
-            "14 DaYs"
-        ]
+        "durations": {
+            "1 DaYs": 99,
+            "3 DaYs": 199,
+            "7 DaYs": 399,
+            "14 DaYs": 699
+        }
     },
 
     "PATO TEAM FF NONROOT + ROOT": {
         "pid": "54",
-        "durations": [
-            "3 DaYs SaFe + Brutal",
-            "7 DaYs",
-            "7 DaYs BruTal",
-            "15 DaYs",
-            "30 DaYs"
-        ]
+        "durations": {
+            "3 DaYs SaFe + Brutal": 299,
+            "7 DaYs": 499,
+            "7 DaYs BruTal": 599,
+            "15 DaYs": 899,
+            "30 DaYs": 1499
+        }
     },
 
     "PRIME HOOK FF NONROOT": {
         "pid": "48",
-        "durations": [
-            "1 Days Nonroot",
-            "3 Days Nonroot",
-            "7 Days NonRoot",
-            "10 Days Nonroot"
-        ]
+        "durations": {
+            "1 Days Nonroot": 99,
+            "3 Days Nonroot": 199,
+            "7 Days NonRoot": 399,
+            "10 Days Nonroot": 599
+        }
     },
 
     "XYZ CHEATS FF ROOT+VPHONE": {
         "pid": "66",
-        "durations": [
-            "3 Days",
-            "7 Days",
-            "15 Days",
-            "30 Days"
-        ]
+        "durations": {
+            "3 Days": 199,
+            "7 Days": 399,
+            "15 Days": 699,
+            "30 Days": 1199
+        }
     }
 }
-
 # ==========================================
 # START COMMAND
 # ==========================================
