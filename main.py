@@ -327,33 +327,33 @@ def callback(call):
         pid = products[product_name]["pid"]
 
         payload = {
-    "api_key": API_KEY,
-    "action": "buy",
-    "product_id": pid,
-    "duration": duration
-}
+            "api_key": API_KEY,
+            "action": "buy",
+            "product_id": pid,
+            "duration": duration
+        }
 
-try:
+        try:
 
-    response = requests.post(
-    API_URL,
-    data=payload
-)
+            response = requests.post(
+                API_URL,
+                data=payload
+            )
 
-result = response.text
+            result = response.text
 
-except Exception as e:
+        except Exception as e:
 
-    bot.send_message(
-        call.message.chat.id,
-        f"❌ API ERROR\n\n{e}"
-    )
+            bot.send_message(
+                call.message.chat.id,
+                f"❌ API ERROR\n\n{e}"
+            )
 
-    return
+            return
 
-bot.send_message(
-    call.message.chat.id,
-    f"""
+        bot.send_message(
+            call.message.chat.id,
+            f"""
 ✅ PAYMENT SUCCESSFUL
 
 📦 PRODUCT:
@@ -368,7 +368,7 @@ bot.send_message(
 
 🔥 THANKS FOR BUYING
 """
-)
+        )
 
 # ==========================================
 # AUTO REPLY SYSTEM
