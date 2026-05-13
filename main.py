@@ -276,19 +276,18 @@ if call.data == "products":
 
         markup.add(btn)
 
-    bot.edit_message_text(
+  bot.edit_message_text(
             "📦 SELECT PRODUCT",
             call.message.chat.id,
             call.message.message_id,
             reply_markup=markup
-        )
+    )
 
     elif data[0] == "product":
 
-    product_name = data[1]
+        product_name = data[1]
 
-    markup = types.InlineKeyboardMarkup()
-
+        markup = types.InlineKeyboardMarkup()
     # DURATION BUTTONS WITH PRICE
     for duration, price in products[product_name]["durations"].items():
 
