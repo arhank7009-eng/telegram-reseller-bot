@@ -338,7 +338,7 @@ elif data[0] == "buy":
         call.message.message_id,
         parse_mode="Markdown",
         reply_markup=markup
-)
+    )
 
     elif data[0] == "paid":
 
