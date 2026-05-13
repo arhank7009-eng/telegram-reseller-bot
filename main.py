@@ -233,7 +233,10 @@ def start(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
 
-    data = call.data.split("|")
+    if call.data is None:
+        return
+
+    data = str(call.data).split("|")
 
     if call.data == "products":
 
