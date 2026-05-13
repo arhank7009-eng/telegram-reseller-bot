@@ -286,12 +286,11 @@ elif data[0] == "product":
 📦 {product_name}
 
 ⏳ SELECT DURATION
-""",
+        """,
         call.message.chat.id,
         call.message.message_id,
         reply_markup=markup
     )
-
 # ==========================================
 # BUY
 # ==========================================
