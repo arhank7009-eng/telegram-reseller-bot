@@ -263,8 +263,7 @@ def callback(call):
             reply_markup=markup
         )
 
-
-    elif data[0] == "product":
+elif data[0] == "product":
 
     product_name = data[1]
 
@@ -287,7 +286,7 @@ def callback(call):
 📦 {product_name}
 
 ⏳ SELECT DURATION
-        """,
+""",
         call.message.chat.id,
         call.message.message_id,
         reply_markup=markup
