@@ -1,6 +1,6 @@
 # ==========================================
 # TELEGRAM AUTO RESELLER BOT
-# FULL AUTO API + ADMIN APPROVAL VERSION
+# FULL ADMIN APPROVE / REJECT SYSTEM
 # RENDER + GITHUB READY
 # ==========================================
 
@@ -20,8 +20,8 @@ API_KEY = os.getenv("API_KEY")
 
 UPI_ID = "8795734376@ybl"
 
-# YOUR TELEGRAM USER ID
-ADMIN_ID = 7762997996
+# APNA TELEGRAM NUMERIC ID
+ADMIN_ID = 123456789
 
 if not BOT_TOKEN:
     raise Exception("BOT_TOKEN not found")
@@ -32,7 +32,7 @@ if not API_KEY:
 bot = TeleBot(BOT_TOKEN, parse_mode="HTML")
 
 # ==========================================
-# KEEP ALIVE FOR RENDER
+# KEEP ALIVE
 # ==========================================
 
 app = Flask(__name__)
@@ -50,7 +50,13 @@ def keep_alive():
     t.start()
 
 # ==========================================
-# PRODUCTS WITH PRICE
+# USER TEMP DATA
+# ==========================================
+
+pending_payments = {}
+
+# ==========================================
+# PRODUCTS
 # ==========================================
 
 products = {
@@ -207,7 +213,7 @@ products = {
 }
 
 # ==========================================
-# START COMMAND
+# START
 # ==========================================
 
 @bot.message_handler(commands=['start'])
@@ -225,71 +231,12 @@ def start(message):
     bot.send_message(
         message.chat.id,
         """
-🔥 WELCOME TO AUTO RESELLER BOT 🔥
+🔥 WELCOME TO AUTO RESELLER BOT
 
-✅ Admin Approval System
-💳 UPI Payment Available
-🛒 Premium Products Available
+💳 UPI PAYMENT
+🔐 ADMIN APPROVAL SYSTEM
         """,
         reply_markup=markup
-    )
-
-# ==========================================
-# SCREENSHOT HANDLER
-# ==========================================
-
-def handle_screenshot(message, product_name, duration, price):
-
-    if not message.photo:
-
-        bot.reply_to(
-            message,
-            "❌ PLEASE SEND PAYMENT SCREENSHOT"
-        )
-
-        return
-
-    user_id = message.from_user.id
-    username = message.from_user.username
-
-    file_id = message.photo[-1].file_id
-
-    markup = types.InlineKeyboardMarkup()
-
-    approve_btn = types.InlineKeyboardButton(
-        "✅ APPROVE",
-        callback_data=f"approve|{user_id}|{product_name}|{duration}|{price}"
-    )
-
-    markup.add(approve_btn)
-
-    bot.send_photo(
-        ADMIN_ID,
-        file_id,
-        caption=f"""
-💳 NEW PAYMENT REQUEST
-
-👤 USER ID:
-{user_id}
-
-📛 USERNAME:
-@{username}
-
-📦 PRODUCT:
-{product_name}
-
-⏳ DURATION:
-{duration}
-
-💵 PRICE:
-₹{price}
-        """,
-        reply_markup=markup
-    )
-
-    bot.reply_to(
-        message,
-        "⏳ PAYMENT SENT FOR ADMIN APPROVAL"
     )
 
 # ==========================================
@@ -299,10 +246,7 @@ def handle_screenshot(message, product_name, duration, price):
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
 
-    if not call.data:
-        return
-
-    data = str(call.data).split("|")
+    data = call.data.split("|")
 
     # ==========================================
     # PRODUCTS
@@ -349,9 +293,8 @@ def callback(call):
 
         bot.edit_message_text(
             f"""
-📡 PRODUCT SELECTED
-
-📦 {product_name}
+📦 PRODUCT:
+{product_name}
 
 ⏳ SELECT DURATION
             """,
@@ -370,11 +313,19 @@ def callback(call):
         duration = data[2]
         price = data[3]
 
+        user_id = call.from_user.id
+
+        pending_payments[user_id] = {
+            "product": product_name,
+            "duration": duration,
+            "price": price
+        }
+
         markup = types.InlineKeyboardMarkup()
 
         ss_btn = types.InlineKeyboardButton(
             "📤 SEND PAYMENT SCREENSHOT",
-            callback_data=f"ss|{product_name}|{duration}|{price}"
+            callback_data="send_ss"
         )
 
         markup.add(ss_btn)
@@ -403,36 +354,14 @@ def callback(call):
         )
 
     # ==========================================
-    # SCREENSHOT
+    # SEND SCREENSHOT
     # ==========================================
 
-    elif data[0] == "ss":
-
-        product_name = data[1]
-        duration = data[2]
-        price = data[3]
+    elif call.data == "send_ss":
 
         bot.send_message(
             call.message.chat.id,
-            f"""
-📤 SEND PAYMENT SCREENSHOT NOW
-
-📦 Product: {product_name}
-
-⏳ Duration: {duration}
-
-💵 Price: ₹{price}
-            """
-        )
-
-        bot.register_next_step_handler(
-            call.message,
-            lambda message: handle_screenshot(
-                message,
-                product_name,
-                duration,
-                price
-            )
+            "📤 SEND PAYMENT SCREENSHOT NOW"
         )
 
     # ==========================================
@@ -444,7 +373,6 @@ def callback(call):
         user_id = int(data[1])
         product_name = data[2]
         duration = data[3]
-        price = data[4]
 
         pid = products[product_name]["pid"]
 
@@ -467,7 +395,7 @@ def callback(call):
         except Exception as e:
 
             bot.send_message(
-                call.message.chat.id,
+                ADMIN_ID,
                 f"❌ API ERROR\n\n{e}"
             )
 
@@ -494,70 +422,97 @@ def callback(call):
 
         bot.answer_callback_query(
             call.id,
-            "PAYMENT APPROVED"
+            "Payment Approved"
+        )
+
+    # ==========================================
+    # REJECT
+    # ==========================================
+
+    elif data[0] == "reject":
+
+        user_id = int(data[1])
+
+        bot.send_message(
+            user_id,
+            """
+❌ PAYMENT REJECTED
+
+CONTACT ADMIN
+            """
+        )
+
+        bot.answer_callback_query(
+            call.id,
+            "Payment Rejected"
         )
 
 # ==========================================
-# AUTO REPLY SYSTEM
+# SCREENSHOT HANDLER
 # ==========================================
 
-@bot.message_handler(func=lambda message: True)
-def auto_reply(message):
+@bot.message_handler(content_types=['photo'])
+def screenshot_handler(message):
 
-    text = message.text.lower()
+    user_id = message.from_user.id
 
-    if text in ["hi", "hello", "hey", "hlo"]:
+    if user_id not in pending_payments:
+        return
 
-        bot.reply_to(
-            message,
-            """
-👋 HELLO BRO
+    data = pending_payments[user_id]
 
-🔥 WELCOME TO AUTO RESELLER BOT
+    product_name = data["product"]
+    duration = data["duration"]
+    price = data["price"]
 
-📌 TYPE /start
-            """
-        )
+    photo = message.photo[-1]
 
-    elif "buy" in text:
+    approve_markup = types.InlineKeyboardMarkup()
 
-        bot.reply_to(
-            message,
-            "🛒 TO BUY PRODUCTS TYPE /start"
-        )
+    approve_btn = types.InlineKeyboardButton(
+        "✅ APPROVE",
+        callback_data=f"approve|{user_id}|{product_name}|{duration}"
+    )
 
-    elif "payment" in text:
+    reject_btn = types.InlineKeyboardButton(
+        "❌ REJECT",
+        callback_data=f"reject|{user_id}"
+    )
 
-        bot.reply_to(
-            message,
-            f"""
-💳 PAYMENT AVAILABLE
+    approve_markup.add(approve_btn, reject_btn)
 
-UPI:
-{UPI_ID}
-            """
-        )
+    bot.send_photo(
+        ADMIN_ID,
+        photo.file_id,
+        caption=f"""
+💸 NEW PAYMENT SCREENSHOT
 
-    elif "price" in text:
+👤 USER ID:
+{user_id}
 
-        bot.reply_to(
-            message,
-            "💰 ALL PRICES AVAILABLE INSIDE BOT\n\nTYPE /start"
-        )
+📦 PRODUCT:
+{product_name}
 
-    else:
+⏳ DURATION:
+{duration}
 
-        bot.reply_to(
-            message,
-            """
-🤖 AUTO REPLY BOT
+💵 PRICE:
+₹{price}
+        """,
+        reply_markup=approve_markup
+    )
 
-📌 TYPE /start
-            """
-        )
+    bot.reply_to(
+        message,
+        """
+✅ SCREENSHOT SENT TO ADMIN
+
+⏳ WAIT FOR APPROVAL
+        """
+    )
 
 # ==========================================
-# RUN BOT
+# RUN
 # ==========================================
 
 print("BOT RUNNING...")
