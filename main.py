@@ -306,8 +306,8 @@ elif data[0] == "buy":
     markup = types.InlineKeyboardMarkup()
 
     paid_btn = types.InlineKeyboardButton(
-        "✅ PAID",
-        callback_data=f"paid|{product_name}|{duration}"
+    "✅ PAID",
+    callback_data=f"paid|{product_name}|{duration}|{price}"
     )
 
     markup.add(paid_btn)
