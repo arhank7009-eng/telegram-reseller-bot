@@ -263,69 +263,82 @@ def callback(call):
             reply_markup=markup
         )
 
+
     elif data[0] == "product":
 
-        product_name = data[1]
+    product_name = data[1]
 
-        markup = types.InlineKeyboardMarkup()
+    markup = types.InlineKeyboardMarkup()
 
-        for duration in products[product_name]["durations"]:
+    # DURATION BUTTONS WITH PRICE
+    for duration, price in products[product_name]["durations"].items():
 
-            btn = types.InlineKeyboardButton(
-                duration,
-                callback_data=f"buy|{product_name}|{duration}"
-            )
+        btn = types.InlineKeyboardButton(
+            f"{duration} - ₹{price}",
+            callback_data=f"buy|{product_name}|{duration}|{price}"
+        )
 
-            markup.add(btn)
+        markup.add(btn)
 
-        bot.edit_message_text(
-            f"""
+    bot.edit_message_text(
+        f"""
 🛒 PRODUCT SELECTED
 
 📦 {product_name}
 
 ⏳ SELECT DURATION
-            """,
-            call.message.chat.id,
-            call.message.message_id,
-            reply_markup=markup
-        )
+        """,
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup
+    )
 
-    elif data[0] == "buy":
+# ==========================================
+# BUY
+# ==========================================
 
-        product_name = data[1]
-        duration = data[2]
+elif data[0] == "buy":
 
-        markup = types.InlineKeyboardMarkup()
+    product_name = data[1]
+    duration = data[2]
+    price = data[3]
 
-        paid_btn = types.InlineKeyboardButton(
-            "✅ PAID",
-            callback_data=f"paid|{product_name}|{duration}"
-        )
+    markup = types.InlineKeyboardMarkup()
 
-        markup.add(paid_btn)
+    paid_btn = types.InlineKeyboardButton(
+        "✅ PAID",
+        callback_data=f"paid|{product_name}|{duration}"
+    )
 
-        bot.edit_message_text(
-            f"""
+    markup.add(paid_btn)
+
+    bot.edit_message_text(
+        f"""
 💳 PAYMENT REQUIRED
 
 📦 Product:
+
 {product_name}
 
 ⏳ Duration:
+
 {duration}
+
+💵 Price:
+
+₹{price}
 
 💰 PAY ON THIS UPI:
 
-`{UPI_ID}`
+{UPI_ID}
 
 ✅ AFTER PAYMENT CLICK PAID BUTTON
-            """,
-            call.message.chat.id,
-            call.message.message_id,
-            parse_mode="Markdown",
-            reply_markup=markup
-        )
+        """,
+        call.message.chat.id,
+        call.message.message_id,
+        parse_mode="Markdown",
+        reply_markup=markup
+)
 
     elif data[0] == "paid":
 
