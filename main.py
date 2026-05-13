@@ -21,7 +21,7 @@ API_KEY = os.getenv("API_KEY")
 UPI_ID = "8795734376@ybl"
 
 # YOUR TELEGRAM USER ID
-ADMIN_ID = 123456789
+ADMIN_ID = 7762997996
 
 if not BOT_TOKEN:
     raise Exception("BOT_TOKEN not found")
