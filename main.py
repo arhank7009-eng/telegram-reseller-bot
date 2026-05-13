@@ -1,6 +1,6 @@
 # ==========================================
 # TELEGRAM AUTO RESELLER BOT
-# FULL AUTO API + ALL PRODUCTS VERSION
+# FULL AUTO API + ADMIN APPROVAL VERSION
 # RENDER + GITHUB READY
 # ==========================================
 
@@ -19,6 +19,9 @@ API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 API_KEY = os.getenv("API_KEY")
 
 UPI_ID = "8795734376@ybl"
+
+# YOUR TELEGRAM USER ID
+ADMIN_ID = 123456789
 
 if not BOT_TOKEN:
     raise Exception("BOT_TOKEN not found")
@@ -224,11 +227,69 @@ def start(message):
         """
 🔥 WELCOME TO AUTO RESELLER BOT 🔥
 
-✅ Instant Key Delivery
+✅ Admin Approval System
 💳 UPI Payment Available
 🛒 Premium Products Available
         """,
         reply_markup=markup
+    )
+
+# ==========================================
+# SCREENSHOT HANDLER
+# ==========================================
+
+def handle_screenshot(message, product_name, duration, price):
+
+    if not message.photo:
+
+        bot.reply_to(
+            message,
+            "❌ PLEASE SEND PAYMENT SCREENSHOT"
+        )
+
+        return
+
+    user_id = message.from_user.id
+    username = message.from_user.username
+
+    file_id = message.photo[-1].file_id
+
+    markup = types.InlineKeyboardMarkup()
+
+    approve_btn = types.InlineKeyboardButton(
+        "✅ APPROVE",
+        callback_data=f"approve|{user_id}|{product_name}|{duration}|{price}"
+    )
+
+    markup.add(approve_btn)
+
+    bot.send_photo(
+        ADMIN_ID,
+        file_id,
+        caption=f"""
+💳 NEW PAYMENT REQUEST
+
+👤 USER ID:
+{user_id}
+
+📛 USERNAME:
+@{username}
+
+📦 PRODUCT:
+{product_name}
+
+⏳ DURATION:
+{duration}
+
+💵 PRICE:
+₹{price}
+        """,
+        reply_markup=markup
+    )
+
+    bot.reply_to(
+        message,
+        "⏳ PAYMENT SENT FOR ADMIN APPROVAL"
     )
 
 # ==========================================
@@ -311,12 +372,12 @@ def callback(call):
 
         markup = types.InlineKeyboardMarkup()
 
-        paid_btn = types.InlineKeyboardButton(
-            "✅ PAID",
-            callback_data=f"paid|{product_name}|{duration}|{price}"
+        ss_btn = types.InlineKeyboardButton(
+            "📤 SEND PAYMENT SCREENSHOT",
+            callback_data=f"ss|{product_name}|{duration}|{price}"
         )
 
-        markup.add(paid_btn)
+        markup.add(ss_btn)
 
         bot.edit_message_text(
             f"""
@@ -333,6 +394,8 @@ def callback(call):
 
 📌 PAY ON THIS UPI:
 {UPI_ID}
+
+📤 AFTER PAYMENT CLICK BUTTON BELOW
             """,
             call.message.chat.id,
             call.message.message_id,
@@ -340,14 +403,48 @@ def callback(call):
         )
 
     # ==========================================
-    # PAID
+    # SCREENSHOT
     # ==========================================
 
-    elif data[0] == "paid":
+    elif data[0] == "ss":
 
         product_name = data[1]
         duration = data[2]
         price = data[3]
+
+        bot.send_message(
+            call.message.chat.id,
+            f"""
+📤 SEND PAYMENT SCREENSHOT NOW
+
+📦 Product: {product_name}
+
+⏳ Duration: {duration}
+
+💵 Price: ₹{price}
+            """
+        )
+
+        bot.register_next_step_handler(
+            call.message,
+            lambda message: handle_screenshot(
+                message,
+                product_name,
+                duration,
+                price
+            )
+        )
+
+    # ==========================================
+    # APPROVE
+    # ==========================================
+
+    elif data[0] == "approve":
+
+        user_id = int(data[1])
+        product_name = data[2]
+        duration = data[3]
+        price = data[4]
 
         pid = products[product_name]["pid"]
 
@@ -377,9 +474,9 @@ def callback(call):
             return
 
         bot.send_message(
-            call.message.chat.id,
+            user_id,
             f"""
-✅ PAYMENT SUCCESSFUL
+✅ PAYMENT APPROVED
 
 📦 PRODUCT:
 {product_name}
@@ -393,6 +490,11 @@ def callback(call):
 
 🔥 THANKS FOR BUYING
             """
+        )
+
+        bot.answer_callback_query(
+            call.id,
+            "PAYMENT APPROVED"
         )
 
 # ==========================================
