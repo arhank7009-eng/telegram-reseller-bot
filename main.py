@@ -336,7 +336,7 @@ elif data[0] == "buy":
         """,
         call.message.chat.id,
         call.message.message_id,
-        parse_mode="Markdown",
+    
         reply_markup=markup
     )
 
