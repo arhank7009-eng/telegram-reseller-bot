@@ -302,7 +302,9 @@ if call.data == "products":
         reply_markup=markup
     )
 
-elif data[0] == "product":
+data = call.data.split("|")
+
+if data[0] == "product":
 
     product_name = data[1]
 
@@ -318,12 +320,12 @@ elif data[0] == "product":
 
         markup.add(btn)
 
-bot.edit_message_text(
+    bot.edit_message_text(
         f"📡 PRODUCT SELECTED\n\n📦 {product_name}\n\n⏳ SELECT DURATION",
         call.message.chat.id,
         call.message.message_id,
         reply_markup=markup
-)
+    )
 # ==========================================
 # BUY
 # ==========================================
