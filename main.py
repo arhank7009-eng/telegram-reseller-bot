@@ -336,11 +336,11 @@ def callback(call):
 try:
 
     response = requests.post(
-        API_URL,
-        data=payload
-    )
+    API_URL,
+    data=payload
+)
 
-    result = response.text
+result = response.text
 
 except Exception as e:
 
@@ -351,7 +351,7 @@ except Exception as e:
 
     return
 
-  bot.send_message(
+bot.send_message(
     call.message.chat.id,
     f"""
 ✅ PAYMENT SUCCESSFUL
