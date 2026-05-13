@@ -318,14 +318,14 @@ elif data[0] == "product":
 
         markup.add(btn)
 
-    bot.edit_message_text(
+        bot.edit_message_text(
         f"""
-📡 PRODUCT SELECTED
+       📡 PRODUCT SELECTED
 
-📦 {product_name}
+     📦 {product_name}
 
-⏳ SELECT DURATION
-""",
+      ⏳ SELECT DURATION
+      """,
         call.message.chat.id,
         call.message.message_id,
         reply_markup=markup
