@@ -327,36 +327,28 @@ elif data[0] == "buy":
 
     markup.add(paid_btn)
 
-    bot.edit_message_text(
+   bot.edit_message_text(
         f"""
 💳 PAYMENT REQUIRED
 
 📦 Product:
-
 {product_name}
 
 ⏳ Duration:
-
 {duration}
 
 💵 Price:
-
 ₹{price}
 
-💰 PAY ON THIS UPI:
-
-{UPI_ID}
-
-✅ AFTER PAYMENT CLICK PAID BUTTON
+📌 PAY ON THIS UPI:
+yourupi@upi
         """,
         call.message.chat.id,
         call.message.message_id,
-    
         reply_markup=markup
     )
 
-    elif data[0] == "paid":
-
+elif data[0] == "paid": 
     product_name = data[1]
     duration = data[2]
     price = data[3]
