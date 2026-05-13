@@ -346,9 +346,9 @@ yourupi@upi
         call.message.chat.id,
         call.message.message_id,
         reply_markup=markup
-    
+    )
 
-elif data[0] == "paid": 
+elif data[0] == "paid":
     product_name = data[1]
     duration = data[2]
     price = data[3]
