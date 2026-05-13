@@ -342,8 +342,9 @@ elif data[0] == "buy":
 
     elif data[0] == "paid":
 
-        product_name = data[1]
-        duration = data[2]
+    product_name = data[1]
+    duration = data[2]
+    price = data[3]
 
         pid = products[product_name]["pid"]
 
