@@ -15,9 +15,7 @@ import os
 # ==========================================
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
-
 API_KEY = os.getenv("API_KEY")
 
 UPI_ID = "8795734376@ybl"
@@ -29,6 +27,7 @@ if not API_KEY:
     raise Exception("API_KEY not found")
 
 bot = TeleBot(BOT_TOKEN, parse_mode="HTML")
+
 # ==========================================
 # KEEP ALIVE FOR RENDER
 # ==========================================
@@ -203,6 +202,7 @@ products = {
         }
     }
 }
+
 # ==========================================
 # START COMMAND
 # ==========================================
@@ -243,6 +243,10 @@ def callback(call):
 
     data = str(call.data).split("|")
 
+    # ==========================================
+    # PRODUCTS
+    # ==========================================
+
     if call.data == "products":
 
         markup = types.InlineKeyboardMarkup()
@@ -263,72 +267,59 @@ def callback(call):
             reply_markup=markup
         )
 
+    # ==========================================
+    # PRODUCT SELECT
+    # ==========================================
 
-if call.data == "products":
+    elif data[0] == "product":
 
-    markup = types.InlineKeyboardMarkup()
+        product_name = data[1]
 
-    for product in products:
+        markup = types.InlineKeyboardMarkup()
 
-        btn = types.InlineKeyboardButton(
-            product,
-            callback_data=f"product|{product}"
+        for duration, price in products[product_name]["durations"].items():
+
+            btn = types.InlineKeyboardButton(
+                f"{duration} - ₹{price}",
+                callback_data=f"buy|{product_name}|{duration}|{price}"
+            )
+
+            markup.add(btn)
+
+        bot.edit_message_text(
+            f"""
+📡 PRODUCT SELECTED
+
+📦 {product_name}
+
+⏳ SELECT DURATION
+            """,
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=markup
         )
 
-        markup.add(btn)
+    # ==========================================
+    # BUY
+    # ==========================================
 
-    bot.edit_message_text(
-        "📦 SELECT PRODUCT",
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=markup
-    )
+    elif data[0] == "buy":
 
-data = call.data.split("|")
+        product_name = data[1]
+        duration = data[2]
+        price = data[3]
 
-if data[0] == "product":
+        markup = types.InlineKeyboardMarkup()
 
-    product_name = data[1]
-
-    markup = types.InlineKeyboardMarkup()
-
-    # DURATION BUTTONS WITH PRICE
-    for duration, price in products[product_name]["durations"].items():
-
-        btn = types.InlineKeyboardButton(
-            f"{duration} - ₹{price}",
-            callback_data=f"buy|{product_name}|{duration}|{price}"
+        paid_btn = types.InlineKeyboardButton(
+            "✅ PAID",
+            callback_data=f"paid|{product_name}|{duration}|{price}"
         )
 
-        markup.add(btn)
+        markup.add(paid_btn)
 
-    bot.edit_message_text(
-        f"📡 PRODUCT SELECTED\n\n📦 {product_name}\n\n⏳ SELECT DURATION",
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=markup
-    )
-# ==========================================
-# BUY
-# ==========================================
-
-elif data[0] == "buy":
-
-    product_name = data[1]
-    duration = data[2]
-    price = data[3]
-
-    markup = types.InlineKeyboardMarkup()
-
-    paid_btn = types.InlineKeyboardButton(
-    "✅ PAID",
-    callback_data=f"paid|{product_name}|{duration}|{price}"
-    )
-
-    markup.add(paid_btn)
-
-   bot.edit_message_text(
-        f"""
+        bot.edit_message_text(
+            f"""
 💳 PAYMENT REQUIRED
 
 📦 Product:
@@ -341,78 +332,68 @@ elif data[0] == "buy":
 ₹{price}
 
 📌 PAY ON THIS UPI:
-yourupi@upi
-        """,
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=markup
-    )
-
-elif data[0] == "paid":
-
-    product_name = data[1]
-    duration = data[2]
-    price = data[3]
-
-    pid = products[product_name]["pid"]
-
-    payload = {
-        "api_key": API_KEY,
-        "action": "buy",
-        "product_id": pid,
-        "duration": duration
-    }
-
-    try:
-
-        response = requests.post(
-            API_URL,
-            data=payload
+{UPI_ID}
+            """,
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=markup
         )
 
-        result = response.text
+    # ==========================================
+    # PAID
+    # ==========================================
 
-    except Exception as e:
+    elif data[0] == "paid":
+
+        product_name = data[1]
+        duration = data[2]
+        price = data[3]
+
+        pid = products[product_name]["pid"]
+
+        payload = {
+            "api_key": API_KEY,
+            "action": "buy",
+            "product_id": pid,
+            "duration": duration
+        }
+
+        try:
+
+            response = requests.post(
+                API_URL,
+                data=payload
+            )
+
+            result = response.text
+
+        except Exception as e:
+
+            bot.send_message(
+                call.message.chat.id,
+                f"❌ API ERROR\n\n{e}"
+            )
+
+            return
 
         bot.send_message(
             call.message.chat.id,
-            f"❌ API ERROR\n\n{e}"
+            f"""
+✅ PAYMENT SUCCESSFUL
+
+📦 PRODUCT:
+{product_name}
+
+⏳ DURATION:
+{duration}
+
+🔑 YOUR KEY:
+
+{result}
+
+🔥 THANKS FOR BUYING
+            """
         )
-
-        return
-bot.send_message(
-        call.message.chat.id,
-        f"""
-✅ PAYMENT SUCCESSFUL
-
-📦 PRODUCT:
-{product_name}
-
-⏳ DURATION:
-{duration}
-
-🔑 YOUR KEY:
-
-{result}
-
-🔥 THANKS FOR BUYING
-"""
-)
-✅ PAYMENT SUCCESSFUL
-
-📦 PRODUCT:
-{product_name}
-
-⏳ DURATION:
-{duration}
-
-🔑 YOUR KEY:
-
-{result}
-
-🔥 THANKS FOR BUYING
-"""
-)
 
 # ==========================================
 # AUTO REPLY SYSTEM
@@ -433,7 +414,7 @@ def auto_reply(message):
 🔥 WELCOME TO AUTO RESELLER BOT
 
 📌 TYPE /start
-"""
+            """
         )
 
     elif "buy" in text:
@@ -452,7 +433,7 @@ def auto_reply(message):
 
 UPI:
 {UPI_ID}
-"""
+            """
         )
 
     elif "price" in text:
@@ -470,7 +451,7 @@ UPI:
 🤖 AUTO REPLY BOT
 
 📌 TYPE /start
-"""
+            """
         )
 
 # ==========================================
