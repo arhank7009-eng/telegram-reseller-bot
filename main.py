@@ -22,8 +22,13 @@ API_KEY = os.getenv("API_KEY")
 
 UPI_ID = "8795734376@ybl"
 
-bot = TeleBot(BOT_TOKEN)
+if not BOT_TOKEN:
+    raise Exception("BOT_TOKEN not found")
 
+if not API_KEY:
+    raise Exception("API_KEY not found")
+
+bot = TeleBot(BOT_TOKEN, parse_mode="HTML")
 # ==========================================
 # KEEP ALIVE FOR RENDER
 # ==========================================
