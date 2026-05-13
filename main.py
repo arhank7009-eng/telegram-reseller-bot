@@ -233,7 +233,7 @@ def start(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
 
-    if call.data is None:
+    if not call.data:
         return
 
     data = str(call.data).split("|")
