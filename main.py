@@ -14,11 +14,11 @@ import os
 # CONFIG
 # ==========================================
 
-BOT_TOKEN = "8697358234:AAFPq-TpgHYTpUQ1jFzz3KrSUl74yAv36zQ"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 API_URL = "https://adminpanels.shop/api/reseller_v1.php"
 
-API_KEY = "1c456265bf21eee11448ce37dcd469a3"
+API_KEY = os.getenv("API_KEY")
 
 UPI_ID = "8795734376@ybl"
 
@@ -47,7 +47,6 @@ def keep_alive():
 # ==========================================
 
 products = {
-
     "BR MOD FF PC VERSION": {
         "pid": "49",
         "durations": [
