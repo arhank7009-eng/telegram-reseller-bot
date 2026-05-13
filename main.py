@@ -263,25 +263,7 @@ def callback(call):
             reply_markup=markup
         )
 
-if call.data == "products":
 
-    markup = types.InlineKeyboardMarkup()
-
-    for product in products:
-
-        btn = types.InlineKeyboardButton(
-            product,
-            callback_data=f"product|{product}"
-        )
-
-        markup.add(btn)
-
-  bot.edit_message_text(
-            "📦 SELECT PRODUCT",
-            call.message.chat.id,
-            call.message.message_id,
-            reply_markup=markup
-    )
 if call.data == "products":
 
     markup = types.InlineKeyboardMarkup()
