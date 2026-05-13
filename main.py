@@ -381,8 +381,23 @@ elif data[0] == "paid":
 
         return
 bot.send_message(
-    call.message.chat.id,
-    f"""
+        call.message.chat.id,
+        f"""
+✅ PAYMENT SUCCESSFUL
+
+📦 PRODUCT:
+{product_name}
+
+⏳ DURATION:
+{duration}
+
+🔑 YOUR KEY:
+
+{result}
+
+🔥 THANKS FOR BUYING
+"""
+)
 ✅ PAYMENT SUCCESSFUL
 
 📦 PRODUCT:
