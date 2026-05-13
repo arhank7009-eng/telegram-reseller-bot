@@ -277,13 +277,13 @@ if call.data == "products":
         markup.add(btn)
 
     bot.edit_message_text(
-        "📦 SELECT PRODUCT",
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=markup
-    )
+            "📦 SELECT PRODUCT",
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=markup
+        )
 
-elif data[0] == "product":
+    elif data[0] == "product":
 
     product_name = data[1]
 
